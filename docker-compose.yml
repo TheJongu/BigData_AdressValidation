@@ -1,0 +1,58 @@
+version: '3.0'
+
+services:
+
+  hadoop:
+    container_name: hadoop
+    image: marcelmittelstaedt/spark_base:latest
+    restart: always
+    ports:
+      - 8088:8088
+      - 9870:9870
+      - 9864:9864
+      - 10000:10000
+      - 8032:8032
+      - 8030:8030
+      - 8031:8031
+      - 9000:9000
+      - 8888:8888
+    networks: 
+      - big-data-network
+      
+  pentaho:
+    container_name: pentaho
+    image: marcelmittelstaedt/pentaho:latest
+    restart: always
+    volumes: 
+      - ./pentaho_files:/home/pentaho/custom_pdi_jobs
+      - ./data:/home/pentaho/address_validation/raw/
+    networks: 
+      - big-data-network
+  
+  node:
+    container_name: node
+    image: "node:8"
+    working_dir: /home/node/app
+    volumes:
+      - ./backend:/home/node/app
+    ports:
+      - 8080:8080
+    command: "npm start"
+    networks: 
+      - big-data-network
+
+  database:
+    container_name: database
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: default
+    ports:
+    - 5432:5432
+    networks: 
+     - big-data-network
+
+networks:
+  big-data-network:
+    name: big-data-network

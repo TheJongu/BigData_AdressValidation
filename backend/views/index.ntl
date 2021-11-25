@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Address Validation </title>
+</head>
+<body>
+
+    <form action="http://localhost:8080/checkDatabase" method="POST">
+      <div>
+        <label for="street">Street</label>
+        <input id="street" name="street"\>
+      </div>
+      <hr style="width:50%;text-align:left;margin-left:0">
+      <div>
+        <label for="number">Number</label>
+        <input id="number" name="number"\>
+      </div>
+      <hr style="width:50%;text-align:left;margin-left:0">
+      <div>
+        <label for="city">City</label>
+        <input id="city" name="city"\>
+      </div>
+      <hr style="width:50%;text-align:left;margin-left:0">
+      <div>
+        <label for="state">State</label>
+        <input id="state" name="state"\>
+      </div>
+      <hr style="width:50%;text-align:left;margin-left:0">
+      <div>
+        <label for="postcode">Postcode</label>
+        <input id="postcode" name="postcode"\>
+      </div>
+      <div>
+        <button type="submit">Check Address</button>
+      </div>
+    </form>
+
+    #result#
+</body>
+</html>
