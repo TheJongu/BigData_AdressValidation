@@ -1,67 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>Create_Final_Hive_Table</name>
+  <name>Download_Addresses</name>
   <description/>
   <extended_description/>
   <job_version/>
+  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2021/11/22 16:57:35.514</created_date>
+  <created_date>2021/11/11 18:34:19.463</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2021/11/22 16:57:35.514</modified_date>
+  <modified_date>2021/11/11 18:34:19.463</modified_date>
   <parameters>
-    </parameters>
-  <connection>
-    <name>Hive2</name>
-    <server>hadoop</server>
-    <type>HIVE2</type>
-    <access>Native</access>
-    <database>default</database>
-    <port>10000</port>
-    <username>hadoop</username>
-    <password>Encrypted </password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>10000</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
+    <parameter>
+      <name>region</name>
+      <default_value/>
+      <description/>
+    </parameter>
+    <parameter>
+      <name>url</name>
+      <default_value/>
+      <description/>
+    </parameter>
+  </parameters>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -356,79 +316,41 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>352</xloc>
-      <yloc>128</yloc>
+      <yloc>32</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Drop final table</name>
+      <name>Herrunterladen der Daten</name>
       <description/>
-      <type>SQL</type>
+      <type>HTTP</type>
       <attributes/>
-      <sql>DROP TABLE final_addresses;
-
-</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>Hive2</connection>
+      <url>${url}</url>
+      <targetfilename>${user.home}/address_validation/raw/${region}.zip</targetfilename>
+      <file_appended>N</file_appended>
+      <date_time_added>N</date_time_added>
+      <targetfilename_extension/>
+      <uploadfilename/>
+      <run_every_row>N</run_every_row>
+      <url_fieldname/>
+      <upload_fieldname/>
+      <dest_fieldname/>
+      <username/>
+      <password>Encrypted </password>
+      <proxy_host/>
+      <proxy_port/>
+      <non_proxy_hosts/>
+      <addfilenameresult>N</addfilenameresult>
+      <headers>
+        <header>
+          <header_name>Authorization</header_name>
+          <header_value>Bearer oa.6abce76a673c62f4401d0d63e8e3af8e9fc3c50e339d5f3d18d97b27494b56e3</header_value>
+        </header>
+      </headers>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>352</xloc>
-      <yloc>224</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Create Table and Insert</name>
-      <description/>
-      <type>SQL</type>
-      <attributes/>
-      <sql>CREATE TABLE IF NOT EXISTS final_addresses AS
-(SELECT DISTINCT
-	get_json_object(json, '$.properties.street') as street,
-	get_json_object(json, '$.properties.number') as housenumber,
-	get_json_object(json, '$.properties.city') as city,
-	get_json_object(json, '$.properties.district') as district,
-	get_json_object(json, '$.properties.region') as region,
-	get_json_object(json, '$.properties.postcode') as postcode
- FROM addresses);</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>Hive2</connection>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>352</xloc>
-      <yloc>336</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>DELETE_FINAL_TABLE</name>
-      <description/>
-      <type>ABORT</type>
-      <attributes/>
-      <message>Cannot delete final table</message>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>496</xloc>
-      <yloc>224</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>CREATE_INSERT_FINAL_TABLE</name>
-      <description/>
-      <type>ABORT</type>
-      <attributes/>
-      <message>Cannot insert into final table</message>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>496</xloc>
-      <yloc>336</yloc>
+      <xloc>448</xloc>
+      <yloc>544</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -440,20 +362,54 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>352</xloc>
-      <yloc>928</yloc>
+      <yloc>736</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Create Temp Table</name>
+      <name>Roh Ordner für Roh Dateien erstellen </name>
       <description/>
-      <type>SQL</type>
+      <type>CREATE_FOLDER</type>
       <attributes/>
-      <sql>CREATE TABLE IF NOT EXISTS final_addresses_temp like final_addresses;</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>Hive2</connection>
+      <foldername>${user.home}/address_validation/raw/raw_${region}</foldername>
+      <fail_of_folder_exists>Y</fail_of_folder_exists>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>352</xloc>
+      <yloc>192</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Delete files</name>
+      <description/>
+      <type>DELETE_FILES</type>
+      <attributes/>
+      <arg_from_previous>N</arg_from_previous>
+      <include_subfolders>Y</include_subfolders>
+      <fields>
+        <field>
+          <name>${user.home}/address_validation/raw/raw_${region}</name>
+          <filemask/>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>288</xloc>
+      <yloc>304</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Gezippte Datei vorhanden?</name>
+      <description/>
+      <type>FILES_EXIST</type>
+      <attributes/>
+      <filename/>
+      <fields>
+        <field>
+          <name>${user.home}/address_validation/raw/${region}.zip</name>
+        </field>
+      </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
@@ -462,80 +418,52 @@
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Load filtered Data from Main to Temp</name>
+      <name>Daten Entzippen</name>
       <description/>
-      <type>SQL</type>
+      <type>UNZIP</type>
       <attributes/>
-      <sql>INSERT INTO final_addresses_temp
-SELECT * FROM final_addresses 
-WHERE street IS NOT NULL AND street &lt;&gt; ''
-AND housenumber IS NOT NULL and housenumber &lt;&gt; ''
-AND city IS NOT NULL and city &lt;&gt; ''
-AND district IS NOT NULL and district &lt;&gt; ''
-AND region IS NOT NULL and region &lt;&gt; ''
-AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>Hive2</connection>
+      <zipfilename>${user.home}/address_validation/raw/${region}.zip</zipfilename>
+      <wildcard/>
+      <wildcardexclude/>
+      <targetdirectory>${user.home}/address_validation/raw/raw_${region}</targetdirectory>
+      <movetodirectory/>
+      <afterunzip>0</afterunzip>
+      <addfiletoresult>N</addfiletoresult>
+      <isfromprevious>N</isfromprevious>
+      <adddate>N</adddate>
+      <addtime>N</addtime>
+      <addOriginalTimestamp>N</addOriginalTimestamp>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <rootzip>N</rootzip>
+      <createfolder>Y</createfolder>
+      <nr_limit>10</nr_limit>
+      <wildcardSource/>
+      <success_condition>success_if_no_errors</success_condition>
+      <iffileexists>OVERWRITE</iffileexists>
+      <create_move_to_directory>Y</create_move_to_directory>
+      <setOriginalModificationDate>N</setOriginalModificationDate>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>352</xloc>
-      <yloc>576</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Copy temp to main table</name>
-      <description/>
-      <type>SQL</type>
-      <attributes/>
-      <sql>INSERT OVERWRITE TABLE final_addresses SELECT * from final_addresses_temp;</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>Hive2</connection>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>352</xloc>
-      <yloc>688</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Drop temp table</name>
-      <description/>
-      <type>SQL</type>
-      <attributes/>
-      <sql>DROP TABLE final_addresses_temp;</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>Hive2</connection>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>352</xloc>
-      <yloc>816</yloc>
+      <yloc>624</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
     <hop>
-      <from>Drop final table</from>
-      <to>Create Table and Insert</to>
+      <from>Start</from>
+      <to>Roh Ordner für Roh Dateien erstellen </to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
+      <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Drop final table</from>
-      <to>DELETE_FINAL_TABLE</to>
+      <from>Roh Ordner für Roh Dateien erstellen </from>
+      <to>Delete files</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -543,8 +471,17 @@ AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Create Table and Insert</from>
-      <to>CREATE_INSERT_FINAL_TABLE</to>
+      <from>Roh Ordner für Roh Dateien erstellen </from>
+      <to>Gezippte Datei vorhanden?</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Gezippte Datei vorhanden?</from>
+      <to>Herrunterladen der Daten</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -552,8 +489,8 @@ AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Create Temp Table</from>
-      <to>Load filtered Data from Main to Temp</to>
+      <from>Gezippte Datei vorhanden?</from>
+      <to>Daten Entzippen</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -561,8 +498,8 @@ AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Load filtered Data from Main to Temp</from>
-      <to>Copy temp to main table</to>
+      <from>Herrunterladen der Daten</from>
+      <to>Daten Entzippen</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -570,16 +507,7 @@ AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Copy temp to main table</from>
-      <to>Drop temp table</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Drop temp table</from>
+      <from>Daten Entzippen</from>
       <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -588,17 +516,8 @@ AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Start</from>
-      <to>Drop final table</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>Create Table and Insert</from>
-      <to>Create Temp Table</to>
+      <from>Delete files</from>
+      <to>Gezippte Datei vorhanden?</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -607,6 +526,48 @@ AND postcode IS NOT NULL and postcode &lt;&gt; '';</sql>
     </hop>
   </hops>
   <notepads>
+    <notepad>
+      <note>Herunterladen, wenn die Datei nicht da liegt</note>
+      <xloc>496</xloc>
+      <yloc>544</yloc>
+      <width>243</width>
+      <heigth>26</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Prüfe ob Zip vorhanden ist</note>
+      <xloc>432</xloc>
+      <yloc>448</yloc>
+      <width>151</width>
+      <heigth>26</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
   <attributes/>
 </job>

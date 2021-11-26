@@ -366,7 +366,7 @@
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>SQL</name>
+      <name>Partitionen einfügen für Hive</name>
       <description/>
       <type>SQL</type>
       <attributes/>
@@ -381,8 +381,8 @@ LOCATION '${user.home}/address_validation/raw/${region}/';</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>368</xloc>
-      <yloc>320</yloc>
+      <xloc>256</xloc>
+      <yloc>448</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -393,15 +393,15 @@ LOCATION '${user.home}/address_validation/raw/${region}/';</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
-      <yloc>320</yloc>
+      <xloc>256</xloc>
+      <yloc>560</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
     <hop>
       <from>Start</from>
-      <to>SQL</to>
+      <to>Partitionen einfügen für Hive</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -409,7 +409,7 @@ LOCATION '${user.home}/address_validation/raw/${region}/';</sql>
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>SQL</from>
+      <from>Partitionen einfügen für Hive</from>
       <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>

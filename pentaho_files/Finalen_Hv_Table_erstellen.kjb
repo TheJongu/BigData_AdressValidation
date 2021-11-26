@@ -1,22 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>Import_Hadoop</name>
+  <name>Create_Final_Hive_Table</name>
   <description/>
   <extended_description/>
   <job_version/>
-  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2021/11/16 17:06:59.510</created_date>
+  <created_date>2021/11/22 16:57:35.514</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2021/11/16 17:06:59.510</modified_date>
+  <modified_date>2021/11/22 16:57:35.514</modified_date>
   <parameters>
-    <parameter>
-      <name>region</name>
-      <default_value/>
-      <description/>
-    </parameter>
-  </parameters>
+    </parameters>
+  <connection>
+    <name>Hive2</name>
+    <server>hadoop</server>
+    <type>HIVE2</type>
+    <access>Native</access>
+    <database>default</database>
+    <port>10000</port>
+    <username>hadoop</username>
+    <password>Encrypted </password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>10000</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -310,33 +355,80 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>688</xloc>
-      <yloc>64</yloc>
+      <xloc>352</xloc>
+      <yloc>128</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Shell</name>
+      <name>Final Addresses droppen</name>
       <description/>
-      <type>SHELL</type>
+      <type>SQL</type>
       <attributes/>
-      <filename/>
-      <work_directory/>
-      <arg_from_previous>N</arg_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <set_append_logfile>N</set_append_logfile>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <insertScript>Y</insertScript>
-      <script>/home/pentaho/hadoop/bin/hadoop fs -put -f ${user.home}/address_validation/raw/raw_ne/us/${region} ${user.home}/address_validation/raw/${region}</script>
-      <loglevel>Basic</loglevel>
+      <sql>DROP TABLE final_addresses;
+
+</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Hive2</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>688</xloc>
-      <yloc>208</yloc>
+      <xloc>352</xloc>
+      <yloc>224</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Finale Adressen Table erstellen</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>CREATE TABLE IF NOT EXISTS final_addresses AS
+(SELECT DISTINCT
+	get_json_object(json, '$.properties.street') as street,
+	get_json_object(json, '$.properties.number') as housenumber,
+	get_json_object(json, '$.properties.city') as city,
+	get_json_object(json, '$.properties.district') as district,
+	get_json_object(json, '$.properties.region') as region,
+	get_json_object(json, '$.properties.postcode') as postcode
+ FROM addresses);</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Hive2</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>352</xloc>
+      <yloc>336</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>DELETE_FINAL_TABLE</name>
+      <description/>
+      <type>ABORT</type>
+      <attributes/>
+      <message>Cannot delete final table</message>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>496</xloc>
+      <yloc>224</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>CREATE_INSERT_FINAL_TABLE</name>
+      <description/>
+      <type>ABORT</type>
+      <attributes/>
+      <message>Cannot insert into final table</message>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>496</xloc>
+      <yloc>336</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -347,106 +439,103 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>688</xloc>
-      <yloc>512</yloc>
+      <xloc>352</xloc>
+      <yloc>928</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>ERROR_HADOOP</name>
+      <name>Kopie Table erstellen</name>
       <description/>
-      <type>ABORT</type>
+      <type>SQL</type>
       <attributes/>
-      <message>Cannot create Hadoop Dir</message>
+      <sql>CREATE TABLE IF NOT EXISTS final_addresses_temp like final_addresses;</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Hive2</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>688</xloc>
-      <yloc>336</yloc>
+      <xloc>352</xloc>
+      <yloc>448</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name> Remove Statewide buildings</name>
+      <name>Daten in den Temp Table laden</name>
       <description/>
-      <type>SHELL</type>
+      <type>SQL</type>
       <attributes/>
-      <filename/>
-      <work_directory/>
-      <arg_from_previous>N</arg_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <set_append_logfile>N</set_append_logfile>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <insertScript>Y</insertScript>
-      <script>/home/pentaho/hadoop/bin/hadoop fs -rm ${user.home}/address_validation/raw/${region}/statewide-buildings-state.geojson
-</script>
-      <loglevel>Basic</loglevel>
+      <sql>INSERT INTO final_addresses_temp
+SELECT * FROM final_addresses 
+WHERE housenumber IS NOT NULL and housenumber &lt;&gt; ''
+AND district IS NOT NULL and district &lt;&gt; ''
+AND region IS NOT NULL and region &lt;&gt; ''
+AND city IS NOT NULL and city &lt;&gt; ''
+AND postcode IS NOT NULL and postcode &lt;&gt; ''
+AND street IS NOT NULL AND street &lt;&gt; '';</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Hive2</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>880</xloc>
-      <yloc>512</yloc>
+      <xloc>352</xloc>
+      <yloc>576</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name> Remove Statewide addressfiles</name>
+      <name>Temporäre Dateien in echten Table kopieren</name>
       <description/>
-      <type>SHELL</type>
+      <type>SQL</type>
       <attributes/>
-      <filename/>
-      <work_directory/>
-      <arg_from_previous>N</arg_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <set_append_logfile>N</set_append_logfile>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <insertScript>Y</insertScript>
-      <script>/home/pentaho/hadoop/bin/hadoop fs -rm ${user.home}/address_validation/raw/${region}/statewide-addresses-state.geojson
-</script>
-      <loglevel>Basic</loglevel>
+      <sql>INSERT OVERWRITE TABLE final_addresses SELECT * from final_addresses_temp;</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Hive2</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>512</xloc>
-      <yloc>512</yloc>
+      <xloc>352</xloc>
+      <yloc>688</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Check if buildings file exists</name>
+      <name>Tmp Table droppen, weil nicht mehr benötigt</name>
       <description/>
-      <type>FILE_EXISTS</type>
+      <type>SQL</type>
       <attributes/>
-      <filename>${user.home}/address_validation/raw/raw_ne/us/${region}/statewide-buildings-state.geojson</filename>
+      <sql>DROP TABLE final_addresses_temp;</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Hive2</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>880</xloc>
-      <yloc>336</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Check if addresses file exists</name>
-      <description/>
-      <type>FILE_EXISTS</type>
-      <attributes/>
-      <filename>${user.home}/address_validation/raw/raw_ne/us/${region}/statewide-addresses-state.geojson</filename>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>512</xloc>
-      <yloc>336</yloc>
+      <xloc>352</xloc>
+      <yloc>816</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
     <hop>
-      <from>Shell</from>
-      <to>ERROR_HADOOP</to>
+      <from>Final Addresses droppen</from>
+      <to>Finale Adressen Table erstellen</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Final Addresses droppen</from>
+      <to>DELETE_FINAL_TABLE</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -454,8 +543,53 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
+      <from>Finale Adressen Table erstellen</from>
+      <to>CREATE_INSERT_FINAL_TABLE</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Kopie Table erstellen</from>
+      <to>Daten in den Temp Table laden</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Daten in den Temp Table laden</from>
+      <to>Temporäre Dateien in echten Table kopieren</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Temporäre Dateien in echten Table kopieren</from>
+      <to>Tmp Table droppen, weil nicht mehr benötigt</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Tmp Table droppen, weil nicht mehr benötigt</from>
+      <to>Success</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
       <from>Start</from>
-      <to>Shell</to>
+      <to>Final Addresses droppen</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -463,106 +597,26 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Shell</from>
-      <to>Check if buildings file exists</to>
+      <from>Finale Adressen Table erstellen</from>
+      <to>Kopie Table erstellen</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Check if buildings file exists</from>
-      <to> Remove Statewide buildings</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from> Remove Statewide buildings</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Shell</from>
-      <to>Check if addresses file exists</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Check if addresses file exists</from>
-      <to> Remove Statewide addressfiles</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from> Remove Statewide addressfiles</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Check if addresses file exists</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>N</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Check if buildings file exists</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>
     <notepad>
-      <note>Buildings Datei muss gelöscht werden, wegen doppelter Daten</note>
-      <xloc>944</xloc>
+      <note>Daten in Final Table laden
+-> Tmp Table erstellen
+-> Tmp Table mit gefilterten Final Daten befüllen
+-> Final Table mit tmp Daten überschreiben
+-> Tmp table Löschen</note>
+      <xloc>464</xloc>
       <yloc>416</yloc>
-      <width>339</width>
-      <heigth>26</heigth>
-      <fontname>Segoe UI</fontname>
-      <fontsize>9</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
-    <notepad>
-      <note>Statewide adressfiles müssen gelöscht werden, wegen doppelter Daten</note>
-      <xloc>96</xloc>
-      <yloc>416</yloc>
-      <width>381</width>
-      <heigth>26</heigth>
+      <width>265</width>
+      <heigth>90</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
       <fontbold>N</fontbold>

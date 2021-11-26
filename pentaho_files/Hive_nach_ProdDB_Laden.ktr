@@ -641,8 +641,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
-      <yloc>192</yloc>
+      <xloc>144</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
